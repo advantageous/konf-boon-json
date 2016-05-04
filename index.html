@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Konf Boon JSON Integration by advantageous</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Konf Boon JSON Integration</h1>
+        <p class="header">Konf Lib for reading LAX JSON and JSON files.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/advantageous/konf-boon-json/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/advantageous/konf-boon-json/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/advantageous/konf-boon-json">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/advantageous">advantageous</a></p>
+
+
+      </header>
+      <section>
+        <p><a href="http://advantageous.github.io/konf/">Konf Main Website</a></p>
+
+<h2>
+<a id="config-lib-to-combine-boon-json-lax-and-normal-with-konf" class="anchor" href="#config-lib-to-combine-boon-json-lax-and-normal-with-konf" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Config Lib to combine Boon JSON (LAX and normal) with Konf</h2>
+
+<p>This lib allows you to get type safe config from JSON LAX, and JSON files.</p>
+
+<p>Let's look at some examples.</p>
+
+<h2>
+<a id="combine-boon-json-with-konf-strongly-typed-config" class="anchor" href="#combine-boon-json-with-konf-strongly-typed-config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Combine BOON JSON with Konf strongly typed config</h2>
+
+<p>This project allows you to combine Boon JSON parser with Konf.</p>
+
+<h4>
+<a id="combining-boon-json-with-konf" class="anchor" href="#combining-boon-json-with-konf" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Combining Boon JSON with Konf</h4>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import static</span> <span class="pl-smi">io.advantageous.konf.boon.BoonConfigLoader.boonConfig</span>;
+<span class="pl-c1">...</span>
+
+        <span class="pl-k">final</span> <span class="pl-smi">Config</span> config <span class="pl-k">=</span> boonConfig(<span class="pl-s"><span class="pl-pds">"</span>reference.conf<span class="pl-pds">"</span></span>);
+        <span class="pl-k">final</span> <span class="pl-smi">String</span> abc <span class="pl-k">=</span> config<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>abc<span class="pl-pds">"</span></span>);
+        assertEquals(<span class="pl-s"><span class="pl-pds">"</span>abc<span class="pl-pds">"</span></span>, abc);
+</pre></div>
+
+<p>Now let's read some strict JSON.</p>
+
+<h4>
+<a id="reading-strict-json" class="anchor" href="#reading-strict-json" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reading Strict JSON</h4>
+
+<div class="highlight highlight-source-java"><pre>
+<span class="pl-k">import static</span> <span class="pl-smi">io.advantageous.konf.boon.BoonConfigLoader.loadStrictJson</span>;
+<span class="pl-c1">...</span>
+
+        <span class="pl-k">final</span> <span class="pl-smi">Config</span> config <span class="pl-k">=</span> loadStrictJson(<span class="pl-s"><span class="pl-pds">"</span>test-config.json<span class="pl-pds">"</span></span>);
+        <span class="pl-k">final</span> <span class="pl-smi">String</span> bar <span class="pl-k">=</span> config<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>);
+        assertEquals(<span class="pl-s"><span class="pl-pds">"</span>baz<span class="pl-pds">"</span></span>, bar);
+
+        <span class="pl-k">final</span> <span class="pl-k">int</span> foo <span class="pl-k">=</span> config<span class="pl-k">.</span>getInt(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>);
+        assertEquals(<span class="pl-c1">1</span>, foo);</pre></div>
+
+<p>We can combine JSON Lax with Konf as a fallback (or the other way around).</p>
+
+<h4>
+<a id="combining-boon-json-lax-with-konf-config" class="anchor" href="#combining-boon-json-lax-with-konf-config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Combining Boon JSON Lax with Konf Config.</h4>
+
+<div class="highlight highlight-source-java"><pre>
+<span class="pl-k">import static</span> <span class="pl-smi">io.advantageous.config.ConfigLoader.configs</span>;
+<span class="pl-k">import static</span> <span class="pl-smi">io.advantageous.config.ConfigLoader.config</span>;
+
+
+<span class="pl-smi">Config</span> config <span class="pl-k">=</span> configs(boonConfig(<span class="pl-s"><span class="pl-pds">"</span>reference.conf<span class="pl-pds">"</span></span>),  <span class="pl-c">//lax JSON</span>
+                        config(<span class="pl-s"><span class="pl-pds">"</span>test-config.js<span class="pl-pds">"</span></span>)); <span class="pl-c">// test-config</span>
+</pre></div>
+
+<h2>
+<a id="lax-json" class="anchor" href="#lax-json" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Lax JSON</h2>
+
+<p>Boon supports strict JSON or lax JSON as in relaxed JSON.
+With relaxed JSON you can single quote keys or use no quote at all.
+Relaxed JSON is very similar to Type Safe Config format.</p>
+
+<p>You can use <code>=</code> instead of <code>:</code>.
+You can use all three common forms of comments <code>#</code>, <code>\*</code>, and <code>\\</code>.</p>
+
+<p>Add an extra comma, forget a comma, and it still works.</p>
+
+<h4>
+<a id="relax-json-example" class="anchor" href="#relax-json-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ReLax JSON example</h4>
+
+<div class="highlight highlight-source-js"><pre>{
+  abc <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>abc<span class="pl-pds">"</span></span>,
+
+  <span class="pl-c">//This allows comments</span>
+  myUri<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>http://host:9000/path?foo=bar<span class="pl-pds">"</span></span>,
+
+  # There are different ways to allow comments
+  someKey<span class="pl-k">:</span> {
+    nestedKey<span class="pl-k">:</span> <span class="pl-c1">234</span>,
+    other<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>this text<span class="pl-pds">"</span></span>
+  },
+
+  <span class="pl-c">/*</span>
+<span class="pl-c">    Are commnents great?</span>
+<span class="pl-c">  */</span>
+
+  int1<span class="pl-k">:</span> <span class="pl-c1">1</span>,
+
+  <span class="pl-c">//Look no comma</span>
+  float1 <span class="pl-k">:</span> <span class="pl-c1">1.0</span>
+
+  <span class="pl-c">//Look I can use equal instead of colon</span>
+  double1 <span class="pl-k">=</span> <span class="pl-c1">1.0</span>
+  long1<span class="pl-k">:</span> <span class="pl-c1">1</span>,
+
+  <span class="pl-c">//No quote around the string</span>
+  string1<span class="pl-k">:</span> rick,
+
+  <span class="pl-c">//Don't need to quote strings but you can.</span>
+  stringList<span class="pl-k">:</span> [Foo, Bar],
+  configInner<span class="pl-k">:</span> {
+    int2<span class="pl-k">:</span> <span class="pl-c1">2</span>,
+    float2<span class="pl-k">:</span> <span class="pl-c1">2.01</span>
+  },
+  myClass<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>java.lang.Object<span class="pl-pds">"</span></span>,
+  myURI<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>http://localhost:8080/foo<span class="pl-pds">"</span></span>,
+  <span class="pl-c">//Maps can have single quotes or double quotes</span>
+  employee<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-c1">123</span>, name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Geoff<span class="pl-pds">"</span></span>},
+  employees<span class="pl-k">:</span> [
+    {id<span class="pl-k">:</span> <span class="pl-c1">123</span>, <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Geoff<span class="pl-pds">"</span></span>},
+    {id<span class="pl-k">:</span> <span class="pl-c1">456</span>, <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Rick<span class="pl-pds">"</span></span>},
+    {id<span class="pl-k">:</span> <span class="pl-c1">789</span>, <span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Paul<span class="pl-pds">"</span></span>}
+  ],
+  <span class="pl-c">//commas are optional</span>
+  floats<span class="pl-k">:</span> [<span class="pl-c1">1.0</span>, <span class="pl-c1">2.0</span>, <span class="pl-c1">3.0</span>]
+  doubles<span class="pl-k">:</span> [<span class="pl-c1">1.0</span>, <span class="pl-c1">2.0</span>, <span class="pl-c1">3.0</span>],
+  longs<span class="pl-k">:</span> [<span class="pl-c1">1.0</span>, <span class="pl-c1">2.0</span>, <span class="pl-c1">3.0</span>],
+  ints<span class="pl-k">:</span> [<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>],
+
+
+  <span class="pl-c">//You can leave off the comma</span>
+  diskSpace<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>10gigabytes<span class="pl-pds">"</span></span>
+
+  <span class="pl-c">// You can end in a comma makes cutting and pasting easier since you </span>
+  <span class="pl-c">// don't have to worry about the trailing comma.</span>
+  diskVolumes<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>10 gigabytes<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>10GB<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>10gigabytes<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>10B<span class="pl-pds">'</span></span>],
+}</pre></div>
+
+<p>Keep in mind that you do not have to use Lax JSON. 
+Lax JSON is much more terse, and allows comments.</p>
+
+<h2>
+<a id="good-parse-error-messages" class="anchor" href="#good-parse-error-messages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Good parse error messages</h2>
+
+<p>Boon gives good parse error messages, and it will tell you the exact line
+of config that has the problem.</p>
+
+<p>Example</p>
+
+<h4>
+<a id="forgot-a-comma-while-doing-strict-json" class="anchor" href="#forgot-a-comma-while-doing-strict-json" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Forgot a comma while doing strict JSON</h4>
+
+<div class="highlight highlight-source-js"><pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-c1">1</span>
+  <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>baz<span class="pl-pds">"</span></span>
+}</pre></div>
+
+<h4>
+<a id="hey-you-have-a-problem-right-on-line-3" class="anchor" href="#hey-you-have-a-problem-right-on-line-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hey you have a problem right on line 3</h4>
+
+<pre><code>The current character read is '"' with an int value of 34
+expecting '}' or ',' but got current char '"' with an int value of 34
+line number 3
+index number 16
+  "bar" : "baz"
+..^
+</code></pre>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
