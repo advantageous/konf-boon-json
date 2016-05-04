@@ -1,3 +1,5 @@
+[Konf Main Website](http://advantageous.github.io/konf/)
+
 ## Config Lib to combine Boon JSON (LAX and normal) with Konf
 
 This lib allows you to get type safe config from JSON LAX, and JSON files.

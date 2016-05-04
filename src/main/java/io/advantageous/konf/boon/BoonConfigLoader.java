@@ -11,6 +11,8 @@ import java.util.List;
 
 import static io.advantageous.config.ResourceUtils.findResource;
 
+
+@SuppressWarnings("WeakerAccess")
 public class BoonConfigLoader {
 
     /**
